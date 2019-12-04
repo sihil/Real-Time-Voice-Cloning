@@ -6,7 +6,6 @@ from encoder.inference import plot_embedding_as_heatmap
 from toolbox.utterance import Utterance
 from pathlib import Path
 from typing import List, Set
-import sounddevice as sd
 import matplotlib.pyplot as plt
 import numpy as np
 # from sklearn.manifold import TSNE         # You can try with TSNE if you like, I prefer UMAP 
@@ -138,37 +137,19 @@ class UI(QDialog):
         self.umap_ax.figure.canvas.draw()
         
     def play(self, wav, sample_rate):
-        sd.stop()
-        sd.play(wav, sample_rate)
+        #
+        # no-op
+        #sd.play(wav, sample_rate)
+        pass
         
     def stop(self):
-        sd.stop()
+        # return no-op
+        #sd.stop()
+        pass
 
     def record_one(self, sample_rate, duration):
-        self.record_button.setText("Recording...")
-        self.record_button.setDisabled(True)
-        
-        self.log("Recording %d seconds of audio" % duration)
-        sd.stop()
-        try:
-            wav = sd.rec(duration * sample_rate, sample_rate, 1)
-        except Exception as e:
-            print(e)
-            self.log("Could not record anything. Is your recording device enabled?")
-            self.log("Your device must be connected before you start the toolbox.")
-            return None
-        
-        for i in np.arange(0, duration, 0.1):
-            self.set_loading(i, duration)
-            sleep(0.1)
-        self.set_loading(duration, duration)
-        sd.wait()
-        
-        self.log("Done recording.")
-        self.record_button.setText("Record one")
-        self.record_button.setDisabled(False)
-        
-        return wav.squeeze()
+        self.log("Could not record anything, recording has been disabled")
+        return None
 
     @property        
     def current_dataset_name(self):
