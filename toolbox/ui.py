@@ -8,12 +8,14 @@ from pathlib import Path
 from typing import List, Set
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 # from sklearn.manifold import TSNE         # You can try with TSNE if you like, I prefer UMAP 
 from time import sleep
 import umap
 import sys
 from warnings import filterwarnings
 filterwarnings("ignore")
+import librosa
 
 
 colormap = np.array([
@@ -140,7 +142,12 @@ class UI(QDialog):
         #
         # no-op
         #sd.play(wav, sample_rate)
-        pass
+        # instead of playing it we save the file into <cwd>/output
+        cwd = os.getcwd()
+        ts = time.gmtime()
+        ts_str = print(time.strftime("%Y-%m-%d_%H%M%S", ts))
+        path = cwd + ts_str + ".wav"
+        librosa.output.write_wav(path, wav, sample_rate)
         
     def stop(self):
         # return no-op
